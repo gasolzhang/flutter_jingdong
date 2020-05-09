@@ -1,4 +1,5 @@
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:dio_log/http_log_list_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -85,11 +86,17 @@ class FakeSearchAppBarState extends State<FakeSearchAppBar> {
 
   Widget getMessageIcon() {
     return IconButton(
-        icon: ImageIcon(
-          AssetImage(Res.icon_message),
-          size: 24,
-          color: Colors.white,
+      icon: ImageIcon(
+        AssetImage(Res.icon_message),
+        size: 24,
+        color: Colors.white,
+      ),
+      ///暂时设置成打开DIO log页面
+      onPressed: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => HttpLogListWidget(),
         ),
-        onPressed: () {});
+      ),
+    );
   }
 }

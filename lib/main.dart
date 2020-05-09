@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'generated/i18n.dart';
+import 'package:flutter/foundation.dart' as Foundation;
 
 EventBus eventBus = EventBus();
 
@@ -27,9 +28,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //statusBar设置为透明，去除半透明遮罩
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    //设置屏幕方向固定为竖屏
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+//    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top,SystemUiOverlay.bottom]);
 
     doMyInit();
+    //是否debug模式
+//    Foundation.kDebugMode;
+    //是否release模式
+//    Foundation.kReleaseMode;
 
     return RefreshConfiguration(
       headerBuilder: () => ClassicHeader(

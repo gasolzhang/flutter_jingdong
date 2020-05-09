@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jingdong/cart/cart_page.dart';
 import 'package:jingdong/category/category.dart';
 import 'package:jingdong/colors/colors.dart';
@@ -23,6 +24,7 @@ class MainState extends State<MainPage> {
   int _curIndex = 0;
   PageController _pageController;
   StreamSubscription loginOrOutSub;
+  DateTime _lastPressedAt; //上次点击时间
 
   @override
   void initState() {
@@ -44,8 +46,21 @@ class MainState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: getBody(), bottomNavigationBar: getBottomNavigationBar());
+    ///WillPopScope拦截Back键导致的pop事件，实现再按一次退出
+    return WillPopScope(
+      onWillPop: () async{
+        if (_lastPressedAt == null ||
+            DateTime.now().difference(_lastPressedAt) > Duration(seconds: 1)) {
+          //两次点击间隔超过1秒则重新计时
+          _lastPressedAt = DateTime.now();
+          Fluttertoast.showToast(msg: '再按一次退出应用');
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+          body: getBody(), bottomNavigationBar: getBottomNavigationBar()),
+    );
   }
 
   Widget getBody() {
